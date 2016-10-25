@@ -15,6 +15,11 @@ func main() {
 		log.Fatal("oops, BUCKET_NAME system variable has to be provided")
 	}
 
+	host_name, err := os.Hostname()
+	if err != nil {
+		panic(err)
+	}
+
 	destinationBucketPath := strings.Join([]string{"s3://", os.Getenv("BUCKET_NAME"), "/"}, "")
 
 	all_devices, err  := ExtractVideoDevices()
@@ -25,9 +30,6 @@ func main() {
 	device_name := ExtractPreferableDeviceName(all_devices)
 	fmt.Println("imagesnap'ing using device: " + device_name)
 
-
-	//hostName := os.Hostname()
-
 	ticker := time.NewTicker(15 * time.Minute)
 	for {
 		select {
@@ -35,8 +37,8 @@ func main() {
 			t := time.Now()
 			fmt.Println(t.Format("3:04PM"), "starting...")
 
-			pathToScreenshot := strings.Join([]string{"tmp/", fmt.Sprintf("%v", int32(time.Now().Unix())), "-screenshot.png"}, "")
-			pathToSnapshot := strings.Join([]string{"tmp/", fmt.Sprintf("%v", int32(time.Now().Unix())), "-snapshot.jpg"}, "")
+			pathToScreenshot := strings.Join([]string{"tmp/", fmt.Sprintf("%v", int32(time.Now().Unix())), "-", host_name, "-screenshot.png"}, "")
+			pathToSnapshot := strings.Join([]string{"tmp/", fmt.Sprintf("%v", int32(time.Now().Unix())), "-", host_name, "-snapshot.jpg"}, "")
 
 			if app.Screencapture(pathToScreenshot) == nil {
 				fmt.Println("Successfully saved screenshot")
