@@ -35,8 +35,8 @@ func main() {
 			t := time.Now()
 			fmt.Println(t.Format("3:04PM"), "starting...")
 
-			pathToScreenshot := strings.Join([]string{fmt.Sprintf("%v", int32(time.Now().Unix())), "-screenshot.png"}, "")
-			pathToSnapshot := strings.Join([]string{fmt.Sprintf("%v", int32(time.Now().Unix())), "-snapshot.jpg"}, "")
+			pathToScreenshot := strings.Join([]string{"tmp/", fmt.Sprintf("%v", int32(time.Now().Unix())), "-screenshot.png"}, "")
+			pathToSnapshot := strings.Join([]string{"tmp/", fmt.Sprintf("%v", int32(time.Now().Unix())), "-snapshot.jpg"}, "")
 
 			if app.Screencapture(pathToScreenshot) == nil {
 				fmt.Println("Successfully saved screenshot")
