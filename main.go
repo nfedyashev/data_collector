@@ -7,6 +7,7 @@ import (
 	"os"
 	"strings"
 	"time"
+	"github.com/nfedyashev/data_collector/app"
 )
 
 func main() {
@@ -15,6 +16,15 @@ func main() {
 	}
 
 	destinationBucketPath := strings.Join([]string{"s3://", os.Getenv("BUCKET_NAME"), "/"}, "")
+
+	all_devices, err  := ExtractVideoDevices()
+	if err != nil {
+		log.Fatal("can not get list of devices")
+	}
+
+	device_name := ExtractPreferableDeviceName(all_devices)
+	fmt.Println("imagesnap'ing using device: " + device_name)
+
 
 	//hostName := os.Hostname()
 
@@ -28,14 +38,14 @@ func main() {
 			pathToScreenshot := strings.Join([]string{fmt.Sprintf("%v", int32(time.Now().Unix())), "-screenshot.png"}, "")
 			pathToSnapshot := strings.Join([]string{fmt.Sprintf("%v", int32(time.Now().Unix())), "-snapshot.jpg"}, "")
 
-			if Screencapture(pathToScreenshot) == nil {
+			if app.Screencapture(pathToScreenshot) == nil {
 				fmt.Println("Successfully saved screenshot")
 
 				UploadToS3(pathToScreenshot, destinationBucketPath)
 				Cleanup(pathToScreenshot)
 			}
 
-			if Snapshot(pathToSnapshot) == nil {
+			if app.Snapshot(pathToSnapshot, device_name) == nil {
 				fmt.Println("Successfully made snapshot")
 
 				UploadToS3(pathToSnapshot, destinationBucketPath)

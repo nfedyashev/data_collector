@@ -27,8 +27,6 @@ func ExtractVideoDevices() ([]string, Error) {
 
 	result := []string{}
 	for v := 0; v < len(raw); v++ {
-		fmt.Println(raw[v])
-
 		if raw[v] != "Video Devices:" && raw[v] != "" {
 			result = append(result, raw[v])
 		}

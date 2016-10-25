@@ -12,7 +12,7 @@ func TestScreencapture(t *testing.T) {
 }
 
 func TestSnapshot(t *testing.T) {
-	err := Snapshot("snapshot.png")
+	err := Snapshot("snapshot.png", "HD Pro Webcam C920")
 
 	assert.Equal(t, err, nil)
 }
